@@ -68,7 +68,7 @@ async function askGroundedLlm(question, history = []) {
   if (process.env.VLLM_BASE_URL) {
     const base = process.env.VLLM_BASE_URL.replace(/\/+$/, '');
     const model = process.env.VLLM_MODEL || 'Qwen/Qwen2.5-14B-Instruct-AWQ';
-    const timeoutMs = Math.max(4, Number(process.env.VLLM_TIMEOUT_S || 12)) * 1000;
+    const timeoutMs = Math.max(3, Number(process.env.VLLM_TIMEOUT_S || 6)) * 1000;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -163,6 +163,29 @@ function findGroundedAnswer(question, recentIds = []) {
       answer:
         "Hey! Glad you pulled up a chair. Ask me anything about my journey—from Ryan International and National Volleyball or MDU engineering, to Bosch, IIM Bangalore, Appirio, Lasersec, Celestial AI, or i-SmokeStack.",
     };
+  }
+
+  if (/^(thanks|thank you|cool|awesome|great|nice|bye|goodbye)\b/.test(q) && q.split(/\s+/).length <= 6) {
+    return {
+      id: 'thanks',
+      answer:
+        "You're very welcome! Feel free to ask about any other chapter of my journey, or tap the Leave Note button below if you'd like to connect directly.",
+    };
+  }
+
+  // Broad category rotation so asking "education" or "experience" twice gives fresh chapters
+  if (/^(tell me about )?(your )?(education|schooling|studies|qualifications)\??$/.test(q)) {
+    const eduOrder = ['ryan-vidya', 'mdu-college', 'iim-symbiosis'];
+    const nextEdu = eduOrder.find((id) => !recentIds.includes(id)) || eduOrder[0];
+    const entry = storyData.podcast.knowledgeBase.find((e) => e.id === nextEdu);
+    if (entry) return { id: entry.id, answer: entry.response };
+  }
+
+  if (/^(tell me about )?(your )?(experience|work|career|jobs)\??$/.test(q)) {
+    const expOrder = ['ismokestack', 'celestial-ayu-datt', 'appirio', 'showmeleads', 'lasersec', 'bosch'];
+    const nextExp = expOrder.find((id) => !recentIds.includes(id)) || expOrder[0];
+    const entry = storyData.podcast.knowledgeBase.find((e) => e.id === nextExp);
+    if (entry) return { id: entry.id, answer: entry.response };
   }
 
   // Score every entry, penalizing recently used topic IDs so Sonia doesn't repeat herself

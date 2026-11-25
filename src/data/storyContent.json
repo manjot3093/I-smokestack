@@ -224,6 +224,31 @@
         "id": "connect-contact",
         "keywords": ["connect", "contact", "linkedin", "email", "reach", "hire", "work together", "talk", "meet"],
         "response": "I'm always open to connecting with people who are building, learning, or growing and want marketing that feels clear and human. You can reach me on LinkedIn at SoniaSpecialist, or drop your note right here using the Leave Note button below."
+      },
+      {
+        "id": "tools-martech",
+        "keywords": ["tools", "stack", "software", "crm", "marketo", "salesforce", "eloqua", "analytics", "ppc", "adwords", "seo", "automation", "drip", "email"],
+        "response": "On the execution side, I've worked hands-on across Marketo and Salesforce CRM—achieving an 80% email delivery rate at ShowMeLeads—alongside Eloqua, Google Analytics, Google AdWords PPC, SEO, drip nurturing, and CRM tracking for medical and SaaS buyers."
+      },
+      {
+        "id": "articles-writing",
+        "keywords": ["article", "articles", "write", "writing", "blog", "publish", "published", "generalist", "generalists", "video", "roadmap"],
+        "response": "I love distilling real team lessons into practical writing—like my pieces on how to build a successful digital marketing team, comparing Specialists versus Generalists, and researching free social media management tools for startups, alongside creative roadmaps like Lasersec's Past, Present, Future."
+      },
+      {
+        "id": "metrics-numbers",
+        "keywords": ["numbers", "metric", "metrics", "achievement", "achievements", "impact", "roi", "revenue", "growth", "biggest", "proud"],
+        "response": "A few milestones I'm proud of: helping grow Appirio's value from X to 5X million in 18 months while building a 15-member Jaipur Marketing Center, driving 1,200 opportunities and 100 closed deals at ShowMeLeads, and leading 20+ global marketers at Lasersec."
+      },
+      {
+        "id": "global-cities",
+        "keywords": ["global", "cities", "countries", "where", "location", "india", "usa", "us", "dubai", "hong kong", "bengaluru", "jaipur", "boston", "noida", "delhi"],
+        "response": "My work has spanned continents—from Bengaluru, Jaipur, Gurugram, Noida, and New Delhi in India, to Hong Kong and Asia-wide launches at Bosch and FARO, Dubai for AYU Lifescience, and Boston, San Francisco, and San Diego in the US."
+      },
+      {
+        "id": "extracurricular-personality",
+        "keywords": ["hobby", "hobbies", "personality", "sports", "outside work", "fun", "interests", "interest", "beyond", "person"],
+        "response": "Beyond marketing frameworks, my personality was forged on debate stages, dance floors, and National Volleyball courts—and later conducting my college Monthly Newspaper and organizing fests at MDU. I enjoy bringing that same energy, curiosity, and steady teamwork into every room."
       }
     ]
   }
