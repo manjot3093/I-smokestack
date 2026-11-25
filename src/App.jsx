@@ -9,6 +9,7 @@ import { ExperienceCanvas } from './three/ExperienceCanvas';
 import { useVoiceEngine } from './hooks/useVoiceEngine';
 import { useSoundFx } from './hooks/useSoundFx';
 import { useAnalytics } from './hooks/useAnalytics';
+import { API_BASE_URL } from './api';
 
 export function App() {
   const [entered, setEntered] = useState(false);
@@ -33,6 +34,11 @@ export function App() {
     playMicCue,
   } = useSoundFx(soundEnabled && entered);
   const { trackEvent } = useAnalytics();
+
+  // Wake Render backend immediately on page load so it's warm before user interacts
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/health`).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!entered) return;

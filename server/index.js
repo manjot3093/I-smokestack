@@ -292,6 +292,15 @@ app.post('/api/analytics', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/health', (_req, res) => {
+  res.json({
+    ok: true,
+    status: 'awake',
+    uptime: Math.round(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get('/api/analytics', (_req, res) => {
   res.json(readDb());
 });
@@ -316,7 +325,28 @@ if (fs.existsSync(distDir)) {
   });
 }
 
+const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000;
+
+function startKeepAlive() {
+  const baseUrl = (process.env.KEEP_ALIVE_URL || process.env.RENDER_EXTERNAL_URL || '').replace(/\/+$/, '');
+  if (!baseUrl) return;
+
+  const healthUrl = `${baseUrl}/api/health`;
+  const ping = async () => {
+    try {
+      await fetch(healthUrl, { signal: AbortSignal.timeout(8000) });
+    } catch (err) {
+      console.warn('Keep-alive ping failed:', err?.message || err);
+    }
+  };
+
+  const timer = setInterval(ping, KEEP_ALIVE_INTERVAL_MS);
+  timer.unref();
+  console.log(`Keep-alive enabled: pinging ${healthUrl} every 10 minutes`);
+}
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Sonia Studio API running on http://localhost:${PORT}`);
+  startKeepAlive();
 });
