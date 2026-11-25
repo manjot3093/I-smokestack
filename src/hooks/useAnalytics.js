@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { API_BASE_URL } from '../api';
 
 const SESSION_ID = `vis_${Math.random().toString(36).slice(2, 10)}`;
 
@@ -8,7 +9,7 @@ const SESSION_ID = `vis_${Math.random().toString(36).slice(2, 10)}`;
  */
 export function useAnalytics() {
   const trackEvent = useCallback((type, payload = {}) => {
-    fetch('/api/analytics', {
+    fetch(`${API_BASE_URL}/api/analytics`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

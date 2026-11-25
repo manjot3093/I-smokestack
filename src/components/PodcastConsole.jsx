@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { API_BASE_URL } from '../api';
 import { Mic, MicOff, Send, Volume2, VolumeX, ArrowLeft, MessageSquarePlus, Play, X } from 'lucide-react';
 import storyData from '../data/storyContent.json';
 
@@ -90,7 +91,7 @@ export function PodcastConsole({
     trackEvent('podcast_question', { via, question: clean });
 
     try {
-      const res = await fetch('/api/podcast', {
+      const res = await fetch(`${API_BASE_URL}/api/podcast`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: clean, history, recentIds }),
@@ -132,7 +133,7 @@ export function PodcastConsole({
     if (!guestName.trim() || !guestNote.trim()) return;
     setConnectStatus('sending');
     try {
-      const res = await fetch('/api/connect', {
+      const res = await fetch(`${API_BASE_URL}/api/connect`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../api';
 import { BarChart3, X } from 'lucide-react';
 
 export function InsightsModal({ open, onClose }) {
@@ -6,7 +7,7 @@ export function InsightsModal({ open, onClose }) {
 
   useEffect(() => {
     if (!open) return;
-    fetch('/api/analytics')
+    fetch(`${API_BASE_URL}/api/analytics`)
       .then((r) => r.json())
       .then(setStats)
       .catch(() => setStats(null));
