@@ -3,7 +3,7 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
+import { synthesizeSpeech } from './tts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -242,25 +242,7 @@ app.post('/api/tts', async (req, res) => {
   if (!text) return res.status(400).json({ error: 'Text is required.' });
 
   try {
-    const tts = new MsEdgeTTS();
-    await tts.setMetadata('en-IN-NeerjaNeural', OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
-    const { audioStream } = tts.toStream(text);
-
-    const chunks = [];
-    await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('TTS timeout')), 10000);
-      audioStream.on('data', (chunk) => chunks.push(chunk));
-      audioStream.on('end', () => {
-        clearTimeout(timer);
-        resolve();
-      });
-      audioStream.on('error', (err) => {
-        clearTimeout(timer);
-        reject(err);
-      });
-    });
-
-    const mp3Buffer = Buffer.concat(chunks);
+    const mp3Buffer = await synthesizeSpeech(text);
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Content-Length', mp3Buffer.length);
     return res.send(mp3Buffer);
